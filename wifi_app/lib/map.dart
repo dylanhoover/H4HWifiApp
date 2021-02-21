@@ -15,7 +15,11 @@ void main() {
   ));
 }
 
-class MyApp extends StatelessWidget {
+class Main extends StatefulWidget {
+  MyApp createState() => MyApp();
+}
+
+class MyApp extends State<Main> {
   final List<ListItem> items;
 
   MyApp({Key key, @required this.items}) : super(key: key);
@@ -45,14 +49,12 @@ class MyApp extends StatelessWidget {
           },
         ),
         bottomNavigationBar: BottomNavigationBar(currentIndex: 1, 
-        /*
           onTap: (currentIndex)
           {
             setState(() {
 
             });
           },
-          */
           items: [
            BottomNavigationBarItem(
                icon: Icon(Icons.list),
