@@ -22,29 +22,32 @@ class Tag {
   }
 }
 
-int size = 2;
 void main() {
   String arrayObjsText =
       '{"tags": [{"title": "BBLE", "address": "445 boy", "distance": 3}, {"title": "BITCH", "address": "6969 slim jim", "distance": 69}]}';
   var tagObjsJson = jsonDecode(arrayObjsText)['tags'] as List;
   List<Tag> tagObjs =
       tagObjsJson.map((tagJson) => Tag.fromJson(tagJson)).toList();
-  List<ListItem> arrayFinal = new List(10);
+  List<ListItem> arrayFinal;
   int count = 0;
-
-  for (int i = 0; i < (size * 3); i++) {
+  for (int i = 0; i < 2 * 3; i++) {
     if ((i % 3) == 0) {
       arrayFinal[count] = HeadingItem(tagObjs[(i / 3).floor()].title);
       count++;
     }
     if ((i % 3) == 1) {
-      arrayFinal[count] = MessageItem(tagObjs[(i / 3).floor()].address,
-          tagObjs[(i / 3).floor()].distance.toString());
+      arrayFinal[count] = MessageItem(
+          tagObjs[count].address, tagObjs[(i / 3).floor()].distance.toString());
       count++;
     }
+    // runApp(MyApp(
+    //  items: List<ListItem>));
+
   }
 
   runApp(MyApp(arrayFinal));
+
+  // runApp(MyApp(tagObjs));
 }
 
 class MyApp extends StatelessWidget {
@@ -64,7 +67,7 @@ class MyApp extends StatelessWidget {
         ),
         body: ListView.builder(
           // Let the ListView know how many items it needs to build.
-          itemCount: ((6 * 2) / 3).floor(),
+          itemCount: items.length,
           // Provide a builder function. This is where the magic happens.
           // Convert each item into a widget based on the type of item it is.
           itemBuilder: (context, index) {
