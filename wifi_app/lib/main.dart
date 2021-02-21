@@ -1,15 +1,22 @@
-//The base formate was used from https://flutter.dev/docs/cookbook/lists/mixed-list
+//The base format was used from https://flutter.dev/docs/cookbook/lists/mixed-list
 
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(MyApp());
+  var list1 = List(3);
+  list1[0] = 1;
+  list1[1] = 2;
+  list1[2] = 3;
+  runApp(MyApp(list1));
 }
 
 class MyApp extends StatelessWidget {
+  List<ListItem> myList;
+  MyApp(List<ListItem> myList);
   @override
   Widget build(BuildContext context) {
     final title = 'Mixed List';
+    int size = 3;
 
     return MaterialApp(
       title: title,
@@ -19,11 +26,11 @@ class MyApp extends StatelessWidget {
         ),
         body: ListView.builder(
           // Let the ListView know how many items it needs to build.
-          itemCount: items.length,
+          itemCount: size,
           // Provide a builder function. This is where the magic happens.
           // Convert each item into a widget based on the type of item it is.
           itemBuilder: (context, index) {
-            final item = items[index];
+            final item = myList[index];
 
             return ListTile(
               title: item.buildTitle(context),
