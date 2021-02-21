@@ -4,8 +4,6 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart';
 import 'package:location/location.dart';
 
-import '../widgets/drawer.dart';
-
 class HomePage extends StatefulWidget {
   static const String route = '/';
   @override
@@ -16,7 +14,7 @@ class _HomePageState extends State<HomePage> {
   LocationData _currentLocation;
   MapController _mapController;
 
-  bool _liveUpdate = false;
+  bool _liveUpdate = true; //start map at your current location
   bool _permission = false;
 
   String _serviceError = '';
@@ -117,7 +115,6 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       appBar: AppBar(title: Text('Azure Maps')),
-      drawer: buildDrawer(context, HomePage.route),
       body: Padding(
         padding: EdgeInsets.all(8.0),
         child: Column(
@@ -125,7 +122,7 @@ class _HomePageState extends State<HomePage> {
             Padding(
               padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
               child: _serviceError.isEmpty
-                  ? Text('This is a map that is showing '
+                  ? Text('Your location is '
                       '(${currentLatLng.latitude}, ${currentLatLng.longitude}).')
                   : Text(
                       'Error occured while acquiring location. Error Message : '
@@ -137,7 +134,7 @@ class _HomePageState extends State<HomePage> {
                 options: MapOptions(
                   center:
                       LatLng(currentLatLng.latitude, currentLatLng.longitude),
-                  zoom: 5.0,
+                  zoom: 10.0,
                   interactiveFlags: interActiveFlags,
                 ),
                 layers: [
@@ -150,7 +147,7 @@ class _HomePageState extends State<HomePage> {
                     // For example purposes. It is recommended to use
                     // TileProvider with a caching and retry strategy, like
                     // NetworkTileProvider or CachedNetworkTileProvider
-                    tileProvider: NonCachingNetworkTileProvider(),
+                    tileProvider: NetworkTileProvider(),
                   ),
                   MarkerLayerOptions(markers: markers)
                 ],

@@ -8,6 +8,7 @@ Widget _buildMenuItem(
 
   return ListTile(
     title: title,
+    enabled: false,
     selected: isSelected,
     onTap: () {
       if (isSelected) {
@@ -38,3 +39,4 @@ Drawer buildDrawer(BuildContext context, String currentRoute) {
     ),
   );
 }
+
