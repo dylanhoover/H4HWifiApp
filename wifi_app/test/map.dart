@@ -1,29 +1,31 @@
 //The base format was used from https://flutter.dev/docs/cookbook/lists/mixed-list
 //yes
-import 'dart:html';
+//import 'dart:html';
 
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(MyApp(
-    items: List<ListItem>.generate(
+void main()
+{
+  runApp(Main());
+}
+
+class Main extends StatefulWidget {
+  List<ListItem> items;
+  MyApp createState() => MyApp(items);
+}
+
+class MyApp extends State<Main> {
+  List<ListItem> items;
+  MyApp(this.items);
+  void init()
+  {
+    items = List<ListItem>.generate(
       1000,
       (i) => i % 6 == 0
           ? HeadingItem("Heading $i")
           : MessageItem("Sender $i", "Message body $i"),
-    ),
-  ));
-}
-
-class Main extends StatefulWidget {
-  MyApp createState() => MyApp();
-}
-
-class MyApp extends State<Main> {
-  final List<ListItem> items;
-
-  MyApp({Key key, @required this.items}) : super(key: key);
-
+    );
+  }
   @override
   Widget build(BuildContext context) {
     final title = 'WiFi Finder';
