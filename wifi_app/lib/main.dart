@@ -3,20 +3,24 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  var list1 = List(3);
-  list1[0] = 1;
-  list1[1] = 2;
-  list1[2] = 3;
-  runApp(MyApp(list1));
+  runApp(MyApp(
+    items: List<ListItem>.generate(
+      1000,
+      (i) => i % 6 == 0
+          ? HeadingItem("Heading $i")
+          : MessageItem("Sender $i", "Message body $i"),
+    ),
+  ));
 }
 
 class MyApp extends StatelessWidget {
-  List<ListItem> myList;
-  MyApp(List<ListItem> myList);
+  final List<ListItem> items;
+
+  MyApp({Key key, @required this.items}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final title = 'Mixed List';
-    int size = 3;
 
     return MaterialApp(
       title: title,
@@ -26,11 +30,11 @@ class MyApp extends StatelessWidget {
         ),
         body: ListView.builder(
           // Let the ListView know how many items it needs to build.
-          itemCount: size,
+          itemCount: items.length,
           // Provide a builder function. This is where the magic happens.
           // Convert each item into a widget based on the type of item it is.
           itemBuilder: (context, index) {
-            final item = myList[index];
+            final item = items[index];
 
             return ListTile(
               title: item.buildTitle(context),
