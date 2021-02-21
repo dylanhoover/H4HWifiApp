@@ -1,22 +1,59 @@
 //The base format was used from https://flutter.dev/docs/cookbook/lists/mixed-list
 
+//import 'dart:html';
+
 import 'package:flutter/material.dart';
+import 'dart:convert';
+
+class Tag {
+  String title;
+  String address;
+  int distance;
+
+  Tag(this.title, this.address, this.distance);
+
+  factory Tag.fromJson(dynamic json) {
+    return (Tag(json['title'] as String, json['address'] as String,
+        json['distance'] as int));
+  }
+  @override
+  String toString() {
+    return '{ ${this.title}, ${this.address}, ${this.distance} }';
+  }
+}
 
 void main() {
-  runApp(MyApp(
-    items: List<ListItem>.generate(
-      1000,
-      (i) => i % 6 == 0
-          ? HeadingItem("Heading $i")
-          : MessageItem("Sender $i", "Message body $i"),
-    ),
-  ));
+  String arrayObjsText =
+      '{"tags": [{"title": "BBLE", "address": "445 boy", "distance": 3}, {"title": "BITCH", "address": "6969 slim jim", "distance": 69}]}';
+  var tagObjsJson = jsonDecode(arrayObjsText)['tags'] as List;
+  List<Tag> tagObjs =
+      tagObjsJson.map((tagJson) => Tag.fromJson(tagJson)).toList();
+  List<ListItem> arrayFinal;
+  int count = 0;
+  for (int i = 0; i < 2 * 3; i++) {
+    if ((i % 3) == 0) {
+      arrayFinal[count] = HeadingItem(tagObjs[(i / 3).floor()].title);
+      count++;
+    }
+    if ((i % 3) == 1) {
+      arrayFinal[count] = MessageItem(
+          tagObjs[count].address, tagObjs[(i / 3).floor()].distance.toString());
+      count++;
+    }
+    // runApp(MyApp(
+    //  items: List<ListItem>));
+
+  }
+
+  runApp(MyApp(arrayFinal));
+
+  // runApp(MyApp(tagObjs));
 }
 
 class MyApp extends StatelessWidget {
   final List<ListItem> items;
 
-  MyApp({Key key, @required this.items}) : super(key: key);
+  MyApp(this.items);
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +79,16 @@ class MyApp extends StatelessWidget {
             );
           },
         ),
+        bottomNavigationBar: BottomNavigationBar(currentIndex: 0, items: [
+          BottomNavigationBarItem(
+              icon: Icon(Icons.list),
+              title: Text('List View'),
+              backgroundColor: Colors.blue),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.map),
+              title: Text('Graph View'),
+              backgroundColor: Colors.blue)
+        ]),
       ),
     );
   }
@@ -83,42 +130,6 @@ class MessageItem implements ListItem {
 
   Widget buildSubtitle(BuildContext context) => Text(body);
 }
-
-// class MyApp extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     Widget list = Container(
-//       padding: const EdgeInsets.all(32),
-//       child: Row(
-//         children: [
-//           Expanded(
-//               child: Column(
-//             crossAxisAlignment: CrossAxisAlignment.start,
-//             children: [
-//               Container(
-//                   padding: const EdgeInsets.only(bottom: 8),
-//                   child: Text(
-//                     'Oeschien Lake Campground',
-//                     style: TextStyle(
-//                       fontWeight: FontWeight.bold,
-//                     ),
-//                   )),
-//               Text(
-//                 'Kandersteg, Switzerland',
-//                 style: TextStyle(
-//                   color: Colors.grey[500],
-//                 ),
-//               ),
-//             ],
-//           )),
-//           Icon(
-//             Icons.star,
-//             color: Colors.red[500],
-//           ),
-//           Text('41'),
-//         ],
-//       ),
-//     );
 
 //     return MaterialApp(
 //       title: 'Free Wifi Mapper',
